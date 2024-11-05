@@ -96,4 +96,4 @@ Delays 5 seconds between updates.
  - Check WiFi credentials if unable to connect.
  - Verify ThingSpeak API key and channel number for successful data updates.
 ## License
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [MIT License](./LICENSE.md).
