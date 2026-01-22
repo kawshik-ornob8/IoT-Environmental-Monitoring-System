@@ -158,10 +158,25 @@
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
+            overflow: hidden;
         }
         
         .diagram-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .badge-3d { background: var(--secondary-color); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+
+        /* Placeholder Images Styles */
+        .placeholder-img {
+            width: 100%;
+            height: 250px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: 500;
+            border: 2px dashed #cbd5e1;
+        }
 
         /* Wiring Table */
         .pin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -177,11 +192,14 @@
             color: #e2e8f0;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
+            max-height: 600px;
+            overflow-y: auto;
         }
         .kwd { color: #c084fc; } /* keyword */
         .str { color: #86efac; } /* string */
         .com { color: #64748b; font-style: italic; } /* comment */
         .func { color: #60a5fa; } /* function */
+        .type { color: #fbbf24; } /* types */
 
         footer { text-align: center; padding: 40px; margin-top: 80px; border-top: 1px solid var(--border-color); color: var(--text-muted); }
 
@@ -195,16 +213,16 @@
 <body class="light-mode">
 
     <div class="float-nav">
-        <div class="icon-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
-        <a href="https://github.com" class="icon-btn"><i class="fab fa-github"></i></a>
+        <div class="icon-btn" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-moon"></i></div>
+        <a href="https://github.com/kawshik-ornob8/IoT-Environmental-Monitoring-System" target="_blank" class="icon-btn" title="View Repository"><i class="fab fa-github"></i></a>
     </div>
 
     <header class="hero">
         <div class="container">
             <h1>EcoSense IoT Monitor</h1>
             <p>A comprehensive ESP32-based system tracking Soil, Air, Water, and Motion data in real-time using ThingSpeak Cloud.</p>
-            <a href="#setup" class="btn">
-                <i class="fas fa-wrench"></i> Start Building
+            <a href="#code" class="btn">
+                <i class="fas fa-code"></i> Get the Code
             </a>
         </div>
     </header>
@@ -214,22 +232,22 @@
             <div class="sensor-card">
                 <i class="fas fa-seedling sensor-icon"></i>
                 <div class="sensor-title">Soil Moisture</div>
-                <div class="sensor-desc">Capacitive tracking</div>
+                <div class="sensor-desc">Capacitive tracking (Pin 34)</div>
             </div>
             <div class="sensor-card">
                 <i class="fas fa-smog sensor-icon" style="color: #ef4444;"></i>
                 <div class="sensor-title">CO Levels</div>
-                <div class="sensor-desc">MQ-7 Gas Sensor</div>
+                <div class="sensor-desc">MQ-7 Gas Sensor (Pin 32)</div>
             </div>
             <div class="sensor-card">
                 <i class="fas fa-water sensor-icon" style="color: var(--secondary-color);"></i>
                 <div class="sensor-title">Water Level</div>
-                <div class="sensor-desc">Auto-Buzzer Alert</div>
+                <div class="sensor-desc">Auto-Buzzer Alert (Pin 35)</div>
             </div>
             <div class="sensor-card">
                 <i class="fas fa-cloud-sun sensor-icon" style="color: #f59e0b;"></i>
                 <div class="sensor-title">DHT22 Weather</div>
-                <div class="sensor-desc">Temp & Humidity</div>
+                <div class="sensor-desc">Temp & Humidity (Pin 2)</div>
             </div>
         </div>
     </div>
@@ -240,38 +258,16 @@
             <div>
                 <h2 style="margin-bottom: 20px;">System Architecture</h2>
                 
-                <div class="diagram-box" style="margin-bottom: 30px;">
-                    <div class="diagram-header">
-                        <h3><i class="fas fa-microchip"></i> ESP32 Pinout Reference</h3>
-                    </div>
-                    
-
-[Image of ESP32 pinout diagram]
-
-                </div>
-
                 <div class="diagram-box">
                     <div class="diagram-header">
-                        <h3><i class="fas fa-project-diagram"></i> Circuit Schematic</h3>
+                        <h3><i class="fas fa-project-diagram"></i> Circuit Diagram</h3>
                     </div>
-                    
+                    <div class="placeholder-img">
+                        <i class="fas fa-image" style="margin-right: 10px;"></i> 
+                        [Circuit Diagram Image: ESP32 + Sensors]
+                    </div>
                     <p style="margin-top:15px; font-size:0.9rem; color:var(--text-muted);">
-                        Connect the DHT22, MQ-7, and Soil sensors to the analog/digital pins as specified below.
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <h2 style="margin-bottom: 20px;">Hardware Implementation</h2>
-                
-                <div class="diagram-box" style="border-color: var(--secondary-color);">
-                    <div class="diagram-header">
-                        <h3><i class="fas fa-cube"></i> 3D Enclosure View</h3>
-                        <span class="badge-3d">Visual Concept</span>
-                    </div>
-                    
-                    <p style="margin-top:10px; font-size:0.85rem; color:var(--text-muted);">
-                        Typical housing setup for outdoor environmental sensors to protect electronics while allowing airflow for DHT22 and MQ-7.
+                        Connect VCC to 3.3V/5V and GND common. Sensor data pins connect to GPIOs as listed below.
                     </p>
                 </div>
 
@@ -289,52 +285,180 @@
                     </table>
                 </div>
             </div>
+
+            <div>
+                <h2 style="margin-bottom: 20px;">Hardware Implementation</h2>
+                
+                <div class="diagram-box" style="border-color: var(--secondary-color);">
+                    <div class="diagram-header">
+                        <h3><i class="fas fa-cube"></i> 3D Enclosure View</h3>
+                        <span class="badge-3d">Visual Concept</span>
+                    </div>
+                    <div class="placeholder-img" style="background: #f8fafc;">
+                        <i class="fas fa-cube" style="margin-right: 10px;"></i>
+                        [3D Model/Enclosure Image]
+                    </div>
+                    <p style="margin-top:10px; font-size:0.85rem; color:var(--text-muted);">
+                        Suggested enclosure design with ventilation for MQ-7/DHT22 sensors and water-proof probe access for Soil/Water sensors.
+                    </p>
+                </div>
+
+                <div class="diagram-box" style="margin-top: 30px;">
+                    <h3>Key Features</h3>
+                    <ul style="list-style: none; margin-top: 15px; padding-left: 5px;">
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>Real-time Cloud Sync:</strong> Uploads to ThingSpeak every 5s.</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>Safety Alert:</strong> Buzzer triggers on low water level (<100).</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>Multi-Sensor:</strong> Tracks 7 different environmental metrics simultaneously.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="setup" class="section-padding container" style="background: white; border-top: 1px solid var(--border-color);">
-        <h2 style="text-align: center; margin-bottom: 40px;">Firmware Logic</h2>
+    <section id="code" class="section-padding container" style="background: white; border-top: 1px solid var(--border-color);">
+        <h2 style="text-align: center; margin-bottom: 40px;">Full Source Code</h2>
         
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div style="margin-bottom: 20px;">
-                <h4><i class="fas fa-wifi"></i> Connectivity & Logic</h4>
-                <p style="color: var(--text-muted);">The ESP32 reads 7 sensors and uploads the payload to ThingSpeak every 5 seconds.</p>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="margin-bottom: 20px; text-align: center;">
+                <p style="color: var(--text-muted);">
+                    Copy the code below into your Arduino IDE. Ensure you have installed the <code>DHT</code> and <code>ThingSpeak</code> libraries.
+                </p>
             </div>
 
-            <pre><code><span class="com">// 1. Initialization</span>
+            <pre><code><span class="com">/*
+ * IoT Environmental Monitoring System
+ * Author: Kawshik Ahmed Ornob
+ * Board: ESP32 Dev Module
+ */</span>
+
+<span class="kwd">#include</span> &lt;WiFi.h&gt;
+<span class="kwd">#include</span> "ThingSpeak.h"
+<span class="kwd">#include</span> "DHT.h"
+
+<span class="com">// --- Pin Definitions ---</span>
+<span class="kwd">#define</span> SOIL_PIN 34
+<span class="kwd">#define</span> WATER_PIN 35
+<span class="kwd">#define</span> MQ7_PIN 32
+<span class="kwd">#define</span> PIR_PIN 18
+<span class="kwd">#define</span> LDR_PIN 25
+<span class="kwd">#define</span> DHT_PIN 2
+<span class="kwd">#define</span> BUZZER_PIN 4
+
+<span class="com">// --- Sensor Setup ---</span>
+<span class="kwd">#define</span> DHTTYPE DHT22
+DHT dht(DHT_PIN, DHTTYPE);
+
+<span class="com">// --- WiFi Credentials ---</span>
+<span class="kwd">const char</span>* ssid = <span class="str">"YOUR_WIFI_NAME"</span>;   <span class="com">// Change this</span>
+<span class="kwd">const char</span>* password = <span class="str">"YOUR_WIFI_PASS"</span>; <span class="com">// Change this</span>
+
+<span class="com">// --- ThingSpeak Setup ---</span>
+<span class="kwd">unsigned long</span> myChannelNumber = 1234567; <span class="com">// Change this</span>
+<span class="kwd">const char</span>* myWriteAPIKey = <span class="str">"YOUR_API_KEY"</span>; <span class="com">// Change this</span>
+
+WiFiClient client;
+
 <span class="kwd">void</span> setup() {
-  WiFi.begin(ssid, password);
+  Serial.begin(115200);
+
+  <span class="com">// Initialize Pins</span>
+  pinMode(BUZZER_PIN, <span class="str">OUTPUT</span>);
+  pinMode(PIR_PIN, <span class="str">INPUT</span>);
+  pinMode(SOIL_PIN, <span class="str">INPUT</span>);
+  pinMode(WATER_PIN, <span class="str">INPUT</span>);
+  pinMode(MQ7_PIN, <span class="str">INPUT</span>);
+  pinMode(LDR_PIN, <span class="str">INPUT</span>);
+
+  <span class="com">// Initialize DHT</span>
+  dht.begin();
+
+  <span class="com">// Connect to WiFi</span>
+  WiFi.mode(WIFI_STA);
   ThingSpeak.begin(client);
-  pinMode(buzzer_pin, <span class="str">OUTPUT</span>);
+  
+  Serial.print(<span class="str">"Connecting to WiFi..."</span>);
+  WiFi.begin(ssid, password);
+  <span class="kwd">while</span> (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(<span class="str">"."</span>);
+  }
+  Serial.println(<span class="str">"\nConnected!"</span>);
 }
 
-<span class="com">// 2. Core Loop</span>
 <span class="kwd">void</span> loop() {
-  <span class="com">// Read Sensors</span>
-  <span class="kwd">int</span> waterLevel = analogRead(35);
-  <span class="kwd">float</span> temp = dht.readTemperature();
+  <span class="com">// --- 1. Read Sensors ---</span>
+  <span class="kwd">int</span> soilVal = analogRead(SOIL_PIN);
+  <span class="kwd">int</span> waterLevel = analogRead(WATER_PIN);
+  <span class="kwd">int</span> mq7Val = analogRead(MQ7_PIN);
+  <span class="kwd">int</span> ldrVal = analogRead(LDR_PIN);
+  <span class="kwd">int</span> motionVal = digitalRead(PIR_PIN);
   
-  <span class="com">// Safety Logic: Low Water Alert</span>
-  <span class="kwd">if</span> (waterLevel < 100) {
-    digitalWrite(buzzer_pin, <span class="str">HIGH</span>);
-  } <span class="kwd">else</span> {
-    digitalWrite(buzzer_pin, <span class="str">LOW</span>);
+  <span class="kwd">float</span> humidity = dht.readHumidity();
+  <span class="kwd">float</span> temperature = dht.readTemperature();
+
+  <span class="com">// Check DHT errors</span>
+  <span class="kwd">if</span> (isnan(humidity) || isnan(temperature)) {
+    Serial.println(<span class="str">"Failed to read from DHT sensor!"</span>);
+    return;
   }
 
-  <span class="com">// Cloud Upload</span>
+  <span class="com">// --- 2. Safety Logic (Buzzer) ---</span>
+  <span class="com">// Trigger buzzer if water level is critically low</span>
+  <span class="kwd">if</span> (waterLevel < 100) {
+    digitalWrite(BUZZER_PIN, <span class="str">HIGH</span>);
+    Serial.println(<span class="str">"ALERT: Low Water Level!"</span>);
+  } <span class="kwd">else</span> {
+    digitalWrite(BUZZER_PIN, <span class="str">LOW</span>);
+  }
+
+  <span class="com">// --- 3. Debug Print ---</span>
+  Serial.print(<span class="str">"Temp: "</span>); Serial.print(temperature);
+  Serial.print(<span class="str">" | Hum: "</span>); Serial.print(humidity);
+  Serial.print(<span class="str">" | Soil: "</span>); Serial.print(soilVal);
+  Serial.print(<span class="str">" | Water: "</span>); Serial.print(waterLevel);
+  Serial.print(<span class="str">" | CO: "</span>); Serial.println(mq7Val);
+
+  <span class="com">// --- 4. Upload to ThingSpeak ---</span>
   ThingSpeak.setField(1, waterLevel);
-  ThingSpeak.setField(2, mq7Value);
-  ThingSpeak.setField(5, temp);
-  
-  ThingSpeak.writeFields(channelID, apiKey);
-  <span class="func">delay</span>(5000);
+  ThingSpeak.setField(2, mq7Val);
+  ThingSpeak.setField(3, ldrVal);
+  ThingSpeak.setField(4, humidity);
+  ThingSpeak.setField(5, temperature);
+  ThingSpeak.setField(6, soilVal);
+  ThingSpeak.setField(7, motionVal);
+
+  <span class="kwd">int</span> x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
+
+  <span class="kwd">if</span>(x == 200){
+    Serial.println(<span class="str">"Channel update successful."</span>);
+  }
+  <span class="kwd">else</span>{
+    Serial.println(<span class="str">"Problem updating channel. HTTP error code "</span> + String(x));
+  }
+
+  <span class="com">// Wait 5 seconds before next update</span>
+  delay(5000);
 }</code></pre>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 EcoSense Project. MIT Licensed.</p>
-    </footer>
+   <div class="footer-bottom">
+  <p class="copyright">
+    &copy; 2022–2026 
+    <a href="https://kawshik.dev" target="_blank" rel="noopener noreferrer">
+      Kawshik Ahmed Ornob
+    </a>. All rights reserved.
+  </p>
+
+  <button
+    class="scroll-top"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    aria-label="Scroll to top"
+  >
+    <i class="ri-arrow-up-s-line"></i>
+  </button>
+</div>
+
 
     <script>
         function toggleTheme() {
